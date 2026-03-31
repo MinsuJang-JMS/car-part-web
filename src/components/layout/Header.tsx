@@ -38,8 +38,8 @@ export default function Header() {
 
         {/* 로고 + 네비 */}
         <div className="flex items-center gap-6">
-          <Link href="/" className="text-xl font-extrabold text-white tracking-tight whitespace-nowrap">
-            ⚙️ 광일통상
+          <Link href="/" className="flex items-center">
+            <img src="/logo.png" alt="광일통상" className="h-10 w-auto" />
           </Link>
 
           <nav className="hidden sm:flex items-center gap-1">
