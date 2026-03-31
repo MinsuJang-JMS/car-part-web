@@ -148,12 +148,8 @@ export default function Home() {
     fetchData();
   }, []);
 
-  if (loading) {
-    return <div className="flex flex-1 items-center justify-center"><p className="text-slate-400 text-sm">로딩 중...</p></div>;
-  }
-
   const calcPrice = (p: Product) =>
-    user?.status === 'active' ? getPrice(p.prices, user.userType, user.businessGrade) : p.prices.individual;
+    !loading && user?.status === 'active' ? getPrice(p.prices, user.userType, user.businessGrade) : p.prices.individual;
 
   return (
     <div className="flex flex-col flex-1">
