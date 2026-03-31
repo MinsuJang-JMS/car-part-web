@@ -140,7 +140,7 @@ export default function Header() {
 
         {/* 우측 인증 메뉴 */}
         <div className="flex items-center gap-2">
-          {loading ? null : user ? (
+          {!loading && user ? (
             <>
               {user.userType === 'admin' && (
                 <Link href="/admin" className="text-xs bg-amber-400 text-slate-900 font-semibold rounded-lg px-3 py-1.5 hover:bg-amber-300 transition-colors">
