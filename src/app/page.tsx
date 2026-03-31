@@ -145,7 +145,7 @@ export default function Home() {
       setDomesticBrands(allBrands.filter(b => b.category === 'domestic'));
       setOemBrands(allBrands.filter(b => b.category === 'oem'));
     }
-    fetchData();
+    fetchData().catch(err => console.error('[fetchData error]', err));
   }, []);
 
   const calcPrice = (p: Product) =>
