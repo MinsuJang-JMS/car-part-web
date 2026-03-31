@@ -14,11 +14,20 @@ interface SiteConfig {
   companyPhone: string;
   businessHours: string;
   businessNumber: string;
+  // 오시는 길
+  mapEmbedUrl: string;
+  naverMapUrl: string;
+  kakaoMapUrl: string;
+  drivingInfo: string;
+  transitInfo: string;
+  parkingInfo: string;
 }
 
 const empty: SiteConfig = {
   companyName: '', companyIntro: '', companyAddress: '',
   companyPhone: '', businessHours: '', businessNumber: '',
+  mapEmbedUrl: '', naverMapUrl: '', kakaoMapUrl: '',
+  drivingInfo: '', transitInfo: '', parkingInfo: '',
 };
 
 export default function AdminSettingsPage() {
@@ -66,6 +75,8 @@ export default function AdminSettingsPage() {
       </div>
 
       <form onSubmit={handleSave} className="flex flex-col gap-5">
+
+        {/* 회사 기본 정보 */}
         <div className="bg-white border border-gray-200 rounded-xl p-6 flex flex-col gap-4">
           <h2 className="font-semibold text-black border-b border-gray-100 pb-3">회사 정보</h2>
 
@@ -76,7 +87,7 @@ export default function AdminSettingsPage() {
 
           <div className="flex flex-col gap-1">
             <label className={labelClass}>회사 소개글</label>
-            <textarea value={config.companyIntro} onChange={e => update('companyIntro', e.target.value)} rows={3} placeholder="회사 소개 문구를 입력하세요" className={inputClass + ' resize-none'} />
+            <textarea value={config.companyIntro} onChange={e => update('companyIntro', e.target.value)} rows={4} placeholder="회사 소개 문구를 입력하세요" className={inputClass + ' resize-none'} />
           </div>
 
           <div className="flex flex-col gap-1">
@@ -97,6 +108,42 @@ export default function AdminSettingsPage() {
           <div className="flex flex-col gap-1">
             <label className={labelClass}>사업자등록번호</label>
             <input type="text" value={config.businessNumber} onChange={e => update('businessNumber', e.target.value)} placeholder="000-00-00000" className={inputClass} />
+          </div>
+        </div>
+
+        {/* 오시는 길 */}
+        <div className="bg-white border border-gray-200 rounded-xl p-6 flex flex-col gap-4">
+          <h2 className="font-semibold text-black border-b border-gray-100 pb-3">오시는 길</h2>
+
+          <div className="flex flex-col gap-1">
+            <label className={labelClass}>지도 임베드 URL</label>
+            <p className="text-xs text-gray-500">네이버 지도 &gt; 공유 &gt; 지도 퍼가기의 src 값을 붙여넣으세요</p>
+            <input type="text" value={config.mapEmbedUrl} onChange={e => update('mapEmbedUrl', e.target.value)} placeholder="https://map.naver.com/p/entry/..." className={inputClass} />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className={labelClass}>네이버 지도 링크</label>
+            <input type="text" value={config.naverMapUrl} onChange={e => update('naverMapUrl', e.target.value)} placeholder="https://naver.me/..." className={inputClass} />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className={labelClass}>카카오 지도 링크</label>
+            <input type="text" value={config.kakaoMapUrl} onChange={e => update('kakaoMapUrl', e.target.value)} placeholder="https://kko.to/..." className={inputClass} />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className={labelClass}>자가용 안내</label>
+            <textarea value={config.drivingInfo} onChange={e => update('drivingInfo', e.target.value)} rows={3} placeholder="예) 서울 방면에서 오시는 경우 ..." className={inputClass + ' resize-none'} />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className={labelClass}>대중교통 안내</label>
+            <textarea value={config.transitInfo} onChange={e => update('transitInfo', e.target.value)} rows={3} placeholder="예) 지하철 X호선 XX역 X번 출구 도보 5분" className={inputClass + ' resize-none'} />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className={labelClass}>주차 안내</label>
+            <textarea value={config.parkingInfo} onChange={e => update('parkingInfo', e.target.value)} rows={2} placeholder="예) 건물 내 주차장 이용 가능 (2시간 무료)" className={inputClass + ' resize-none'} />
           </div>
         </div>
 

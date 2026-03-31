@@ -6,11 +6,12 @@ import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
 
 const menuItems = [
+  { href: '/admin/products', icon: '📋', title: '상품 목록', desc: '등록된 상품 조회, 활성화/숨기기, 삭제' },
   { href: '/admin/products/new', icon: '📦', title: '상품 등록', desc: '새 상품을 등록합니다' },
   { href: '/admin/users', icon: '👥', title: '사업자 승인', desc: '가입 신청한 사업자를 검토합니다' },
   { href: '/admin/categories', icon: '🗂️', title: '카테고리 관리', desc: '상품 카테고리를 추가/삭제합니다' },
-  { href: '/admin/brands', icon: '🏷️', title: '브랜드 관리', desc: '상품 브랜드를 추가/삭제합니다' },
-  { href: '/admin/settings', icon: '⚙️', title: '사이트 설정', desc: '회사명, 주소, 전화번호, 영업시간 등' },
+  { href: '/admin/brands', icon: '🏷️', title: '브랜드 관리', desc: '외제차/국산차/OEM 브랜드 추가·수정·삭제' },
+  { href: '/admin/settings', icon: '⚙️', title: '사이트 설정', desc: '회사명, 주소, 전화번호, 오시는 길 등' },
 ];
 
 export default function AdminPage() {

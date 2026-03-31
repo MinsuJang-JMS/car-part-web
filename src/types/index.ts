@@ -1,8 +1,12 @@
 export type UserType = 'individual' | 'business' | 'admin';
 
+export type BrandCategory = 'import' | 'domestic' | 'oem';
+
 export interface Brand {
   id: string;
   name: string;
+  category: BrandCategory;
+  imageUrl?: string;
   createdAt: Date;
 }
 export type UserStatus = 'active' | 'pending' | 'rejected';

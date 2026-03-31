@@ -57,6 +57,8 @@ export default function Footer() {
               <a href="/categories" className="hover:text-white transition-colors">카테고리</a>
               <a href="/brands" className="hover:text-white transition-colors">브랜드</a>
               <a href="/vin" className="hover:text-white transition-colors">VIN 조회</a>
+              <a href="/about" className="hover:text-white transition-colors">회사소개</a>
+              <a href="/location" className="hover:text-white transition-colors">오시는 길</a>
             </div>
           </div>
         </div>

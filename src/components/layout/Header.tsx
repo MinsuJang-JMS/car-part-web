@@ -119,6 +119,22 @@ export default function Header() {
             >
               VIN 조회
             </Link>
+
+            {/* 회사소개 */}
+            <Link
+              href="/about"
+              className="text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg px-3 py-2 transition-all"
+            >
+              회사소개
+            </Link>
+
+            {/* 오시는 길 */}
+            <Link
+              href="/location"
+              className="text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg px-3 py-2 transition-all"
+            >
+              오시는 길
+            </Link>
           </nav>
         </div>
 
