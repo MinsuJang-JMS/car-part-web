@@ -39,7 +39,7 @@ export default function Header() {
         {/* 로고 + 네비 */}
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center">
-            <img src="/logo.png" alt="광일통상" className="h-10 w-auto" />
+            <img src="/logo.png" alt="광일통상" className="h-10 w-auto" style={{ mixBlendMode: 'screen' }} />
           </Link>
 
           <nav className="hidden sm:flex items-center gap-1">
