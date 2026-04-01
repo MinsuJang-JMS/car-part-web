@@ -79,7 +79,8 @@ async function fetchNhtsaVin(vin: string): Promise<VehicleInfo | null> {
 
     const data = await res.json();
     const result = data.Results?.[0];
-    if (!result || result.ErrorCode !== '0') return null;
+    // ErrorCode '0'이 아니어도 Make가 있으면 부분 데이터 반환 (신차/미등록 차량 대응)
+    if (!result || !result.Make) return null;
 
     return {
       make: result.Make || '',
