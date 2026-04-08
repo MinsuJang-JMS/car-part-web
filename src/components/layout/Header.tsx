@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useAuth } from '@/context/AuthContext';
@@ -17,6 +17,18 @@ export default function Header() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   useEffect(() => {
     async function fetchNavData() {
@@ -128,13 +140,43 @@ export default function Header() {
                     관리자
                   </Link>
                 )}
-                <span className="text-sm text-slate-300 hidden sm:block">{user.name}님</span>
-                <button
-                  onClick={handleLogout}
-                  className="hidden sm:block text-sm text-slate-300 hover:text-white border border-slate-600 hover:border-slate-400 rounded-lg px-3 py-1.5 transition-all"
-                >
-                  로그아웃
-                </button>
+                {/* 유저 드롭다운 (데스크탑) */}
+                <div className="relative hidden sm:block" ref={userMenuRef}>
+                  <button
+                    onClick={() => setUserMenuOpen(prev => !prev)}
+                    className="flex items-center gap-1.5 text-sm text-slate-300 hover:text-white rounded-lg px-3 py-1.5 hover:bg-white/10 transition-all"
+                  >
+                    {user.name}님
+                    <svg className={`w-3 h-3 opacity-60 transition-transform ${userMenuOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  {userMenuOpen && (
+                    <div className="absolute right-0 top-full mt-1 w-44 bg-white rounded-xl shadow-xl border border-gray-100 z-50 py-1 overflow-hidden">
+                      <Link
+                        href="/my-orders"
+                        onClick={() => setUserMenuOpen(false)}
+                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+                      >
+                        <span>📦</span> 내 주문 현황
+                      </Link>
+                      <Link
+                        href="/my-account"
+                        onClick={() => setUserMenuOpen(false)}
+                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+                      >
+                        <span>👤</span> 회원 정보 변경
+                      </Link>
+                      <div className="border-t border-gray-100 my-1" />
+                      <button
+                        onClick={() => { setUserMenuOpen(false); handleLogout(); }}
+                        className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 transition-colors"
+                      >
+                        <span>🚪</span> 로그아웃
+                      </button>
+                    </div>
+                  )}
+                </div>
               </>
             ) : (
               <>
@@ -202,7 +244,8 @@ export default function Header() {
                 장바구니
                 {totalCount > 0 && <span className="bg-blue-500 text-white text-xs font-bold rounded-full px-1.5 py-0.5">{totalCount}</span>}
               </Link>
-              {user && <Link href="/my-orders" onClick={closeMobile} className="py-3.5 text-slate-300 text-sm">내 주문 현황</Link>}
+              {user && <Link href="/my-orders" onClick={closeMobile} className="py-3.5 text-slate-300 text-sm">📦 내 주문 현황</Link>}
+              {user && <Link href="/my-account" onClick={closeMobile} className="py-3.5 text-slate-300 text-sm">👤 회원 정보 변경</Link>}
 
               {/* 로그인/로그아웃 */}
               <div className="py-4 flex flex-col gap-2">
