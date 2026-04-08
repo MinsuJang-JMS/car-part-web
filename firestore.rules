@@ -59,5 +59,21 @@ service cloud.firestore {
       allow read:  if true;
       allow write: if isAdmin();
     }
+
+    // ── orders ───────────────────────────────────────────────
+    match /orders/{orderId} {
+      // 로그인한 사용자만 주문 생성 (본인 uid 일치 필수)
+      allow create: if isSignedIn() &&
+        request.resource.data.userId == request.auth.uid;
+      // 본인 주문 조회
+      allow read: if isSignedIn() &&
+        resource.data.userId == request.auth.uid;
+      // 본인 주문이 pending 상태일 때만 수정/취소 가능
+      allow update: if isSignedIn() &&
+        resource.data.userId == request.auth.uid &&
+        resource.data.status == 'pending';
+      // 어드민은 전체 조회 및 상태 변경
+      allow read, update: if isAdmin();
+    }
   }
 }
