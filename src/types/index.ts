@@ -70,3 +70,41 @@ export interface PendingBusiness {
   createdAt: Date;
   status: 'pending' | 'approved' | 'rejected';
 }
+
+export interface CartItem {
+  productId: string;
+  productName: string;
+  imageUrl?: string;
+  price: number;
+  quantity: number;
+}
+
+export type OrderStatus = 'pending' | 'processing' | 'shipped' | 'completed' | 'cancelled';
+
+export const ORDER_STATUS_LABEL: Record<OrderStatus, string> = {
+  pending: '주문접수',
+  processing: '처리중',
+  shipped: '배송중',
+  completed: '완료',
+  cancelled: '취소됨',
+};
+
+export interface Order {
+  id: string;
+  userId: string;
+  userName: string;
+  userPhone: string;
+  userEmail: string;
+  userType: UserType;
+  businessGrade?: BusinessGrade;
+  businessName?: string;
+  items: CartItem[];
+  recipientName: string;
+  recipientPhone: string;
+  shippingAddress: string;
+  note?: string;
+  totalAmount: number;
+  status: OrderStatus;
+  createdAt: Date;
+  updatedAt: Date;
+}

@@ -6,11 +6,13 @@ import { useEffect, useState } from 'react';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useAuth } from '@/context/AuthContext';
+import { useCart } from '@/context/CartContext';
 import { logout } from '@/lib/authActions';
 import { Category, Brand } from '@/types';
 
 export default function Header() {
   const { user, loading } = useAuth();
+  const { totalCount } = useCart();
   const router = useRouter();
   const [categories, setCategories] = useState<Category[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
@@ -107,8 +109,18 @@ export default function Header() {
             </nav>
           </div>
 
-          {/* 우측: 인증 메뉴 + 햄버거 버튼 */}
+          {/* 우측: 장바구니 + 인증 메뉴 + 햄버거 버튼 */}
           <div className="flex items-center gap-2">
+            <Link href="/cart" className="relative p-2 text-slate-300 hover:text-white transition-colors" onClick={closeMobile}>
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              {totalCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 bg-blue-500 text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center leading-none">
+                  {totalCount > 9 ? '9+' : totalCount}
+                </span>
+              )}
+            </Link>
             {!loading && user ? (
               <>
                 {user.userType === 'admin' && (
@@ -186,6 +198,11 @@ export default function Header() {
               <Link href="/vin" onClick={closeMobile} className="py-3.5 text-white font-medium text-sm">🔍 VIN 조회</Link>
               <Link href="/about" onClick={closeMobile} className="py-3.5 text-slate-300 text-sm">회사소개</Link>
               <Link href="/location" onClick={closeMobile} className="py-3.5 text-slate-300 text-sm">오시는 길</Link>
+              <Link href="/cart" onClick={closeMobile} className="py-3.5 text-slate-300 text-sm flex items-center gap-2">
+                장바구니
+                {totalCount > 0 && <span className="bg-blue-500 text-white text-xs font-bold rounded-full px-1.5 py-0.5">{totalCount}</span>}
+              </Link>
+              {user && <Link href="/my-orders" onClick={closeMobile} className="py-3.5 text-slate-300 text-sm">내 주문 현황</Link>}
 
               {/* 로그인/로그아웃 */}
               <div className="py-4 flex flex-col gap-2">

@@ -1,19 +1,24 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Product } from '@/types';
 import { useAuth } from '@/context/AuthContext';
+import { useCart } from '@/context/CartContext';
 import { getPrice, formatPrice } from '@/lib/priceUtils';
 import Link from 'next/link';
 
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { user } = useAuth();
+  const { addItem } = useCart();
+  const router = useRouter();
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedImg, setSelectedImg] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+  const [added, setAdded] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -39,6 +44,19 @@ export default function ProductDetailPage() {
         <p className="text-gray-500">상품을 찾을 수 없습니다.</p>
       </div>
     );
+  }
+
+  function handleAddToCart() {
+    if (!product) return;
+    addItem({
+      productId: product.id,
+      productName: product.name,
+      imageUrl: product.imageUrls?.[0],
+      price,
+      quantity,
+    });
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
   }
 
   const price = user?.status === 'active'
@@ -107,6 +125,44 @@ export default function ProductDetailPage() {
               {product.stock > 0 ? `재고 ${product.stock}개` : '품절'}
             </span>
           </div>
+
+          {/* 수량 + 장바구니 버튼 */}
+          {product.stock > 0 && (
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-gray-600">수량</span>
+                <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden">
+                  <button
+                    onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                    className="w-9 h-9 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors text-lg"
+                  >−</button>
+                  <span className="w-10 text-center text-sm font-medium text-black">{quantity}</span>
+                  <button
+                    onClick={() => setQuantity(q => Math.min(product.stock, q + 1))}
+                    className="w-9 h-9 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors text-lg"
+                  >+</button>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={handleAddToCart}
+                  className={`flex-1 py-3 rounded-xl font-semibold text-sm transition-all ${
+                    added
+                      ? 'bg-green-500 text-white'
+                      : 'bg-blue-600 hover:bg-blue-500 text-white'
+                  }`}
+                >
+                  {added ? '담겼습니다!' : '장바구니 담기'}
+                </button>
+                <button
+                  onClick={() => { handleAddToCart(); router.push('/cart'); }}
+                  className="flex-1 py-3 rounded-xl font-semibold text-sm border-2 border-blue-600 text-blue-600 hover:bg-blue-50 transition-all"
+                >
+                  바로 구매
+                </button>
+              </div>
+            </div>
+          )}
 
           {product.description && (
             <div>

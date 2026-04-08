@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
+import { CartProvider } from "@/context/CartContext";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
@@ -27,9 +28,11 @@ export default function RootLayout({
         style={{ background: "linear-gradient(135deg, #e8eef7 0%, #f4f7fb 40%, #eef2ff 100%)" }}
       >
         <AuthProvider>
-          <Header />
-          <main className="flex flex-col flex-1">{children}</main>
-          <Footer />
+          <CartProvider>
+            <Header />
+            <main className="flex flex-col flex-1">{children}</main>
+            <Footer />
+          </CartProvider>
         </AuthProvider>
       </body>
     </html>

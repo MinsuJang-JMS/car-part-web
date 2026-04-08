@@ -6,6 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
 
 const menuItems = [
+  { href: '/admin/orders', icon: '🧾', title: '주문 관리', desc: '접수된 주문 확인 및 상태 변경' },
   { href: '/admin/products', icon: '📋', title: '상품 목록', desc: '등록된 상품 조회, 활성화/숨기기, 삭제' },
   { href: '/admin/products/new', icon: '📦', title: '상품 등록', desc: '새 상품을 등록합니다' },
   { href: '/admin/users', icon: '👥', title: '사업자 승인', desc: '가입 신청한 사업자를 검토합니다' },
