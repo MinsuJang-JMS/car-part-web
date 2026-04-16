@@ -112,6 +112,12 @@ export default function AdminProductsPage() {
 
               {/* 액션 */}
               <div className="flex items-center gap-3 flex-shrink-0">
+                <Link
+                  href={`/admin/products/${product.id}/edit`}
+                  className="text-xs text-blue-600 hover:text-blue-800 font-medium transition-colors"
+                >
+                  수정
+                </Link>
                 <button
                   onClick={() => handleToggleActive(product)}
                   className={`text-xs rounded-lg px-3 py-1.5 font-medium transition-colors ${
